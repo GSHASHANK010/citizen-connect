@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Manrope, system-ui, sans-serif;
+  color: #18201b;
+  background: #f7f5ef;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Scrollbar helpers ------------------------------------------------------ */
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-thin {
+  scrollbar-color: rgba(49, 92, 69, 0.22) transparent;
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(49, 92, 69, 0.22);
+  border-radius: 99px;
+}
+
+/* Hand-drawn preview map ------------------------------------------------ */
+
+.map-grid {
+  background-image:
+    linear-gradient(
+      27deg,
+      transparent 46%,
+      rgba(255, 255, 255, 0.8) 47%,
+      rgba(255, 255, 255, 0.8) 49%,
+      transparent 50%
+    ),
+    linear-gradient(
+      112deg,
+      transparent 47%,
+      rgba(255, 255, 255, 0.72) 48%,
+      rgba(255, 255, 255, 0.72) 50%,
+      transparent 51%
+    ),
+    linear-gradient(
+      5deg,
+      transparent 48%,
+      rgba(255, 255, 255, 0.65) 49%,
+      rgba(255, 255, 255, 0.65) 50%,
+      transparent 51%
+    );
+  background-size: 150px 120px, 180px 145px, 220px 115px;
+}
+
+.map-label {
+  position: absolute;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(24, 32, 27, 0.45);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.issue-pin::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  z-index: -1;
+  width: 7px;
+  height: 7px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* Shared live-location animation ---------------------------------------- */
+
+.user-dot,
+.google-user-dot {
+  box-shadow:
+    0 0 0 8px rgba(59, 130, 246, 0.18),
+    0 2px 7px rgba(0, 0, 0, 0.22);
+  animation: pulse-dot 2.2s ease-out infinite;
+}
+
+@keyframes pulse-dot {
+  50% {
+    box-shadow:
+      0 0 0 15px rgba(59, 130, 246, 0),
+      0 2px 7px rgba(0, 0, 0, 0.22);
+  }
+}
+
+/* Google Maps markers --------------------------------------------------- */
+
+.google-issue-pin {
+  position: relative;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 3px solid white;
+  border-radius: 999px;
+  background: #dd5a4e;
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.24);
+  transition: transform 0.18s ease;
+}
+
+.google-issue-pin:hover,
+.google-issue-pin.is-selected {
+  transform: scale(1.2);
+}
+
+.google-user-dot {
+  width: 17px;
+  height: 17px;
+  border: 3px solid white;
+  border-radius: 999px;
+  background: #3b82f6;
+}
+
+/* Leaflet / OpenStreetMap ------------------------------------------------ */
+
+.leaflet-container {
+  z-index: 0;
+  isolation: isolate;
+  background: #e8e6df;
+  font-family: Manrope, system-ui, sans-serif;
+}
+
+.leaflet-control-attribution {
+  font-size: 9px !important;
+}
+
+.leaflet-control-zoom {
+  overflow: hidden;
+  margin-bottom: 62px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 25px rgba(24, 32, 27, 0.12) !important;
+}
+
+.leaflet-control-zoom a {
+  display: grid !important;
+  width: 40px !important;
+  height: 40px !important;
+  place-items: center;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #315c45 !important;
+  font-family: Manrope, sans-serif !important;
+}
+
+.leaflet-issue-pin {
+  position: relative;
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border: 3px solid white;
+  border-radius: 999px;
+  background: var(--pin-color);
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease;
+}
+
+.leaflet-issue-pin::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 3px solid white;
+  border-bottom: 3px solid white;
+  background: var(--pin-color);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.leaflet-issue-pin:hover,
+.leaflet-issue-pin.is-selected {
+  transform: scale(1.18);
+}
+
+.leaflet-user-dot {
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  border-radius: 999px;
+  background: #3b82f6;
+  box-shadow:
+    0 0 0 8px rgba(59, 130, 246, 0.2),
+    0 2px 7px rgba(0, 0, 0, 0.22);
+  animation: pulse-dot 2.2s ease-out infinite;
+}
+
+/* Responsive helpers ---------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .mock-map {
+    bottom: 0;
+  }
+}
+
+@media (min-width: 420px) {
+  .xs\:inline {
+    display: inline;
+  }
+
+  .xs\:hidden {
+    display: none;
+  }
+}

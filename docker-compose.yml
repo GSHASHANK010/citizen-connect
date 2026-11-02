@@ -1,0 +1,45 @@
+# Local infrastructure for Citizen Connect.
+#
+#   docker compose up -d          # start PostgreSQL only (API runs on your machine)
+#   docker compose --profile full up -d --build   # also run API + web app in Docker on :4000
+#
+# Data is kept in the named volume "citizen_connect_pgdata" between restarts.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: citizen-connect-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: citizen_connect
+      POSTGRES_USER: citizen
+      POSTGRES_PASSWORD: citizen_dev_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - citizen_connect_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U citizen -d citizen_connect']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    profiles: ['full']
+    build: .
+    container_name: citizen-connect-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgres://citizen:citizen_dev_password@db:5432/citizen_connect
+      CORS_ORIGIN: http://localhost:4000
+      PHOTO_STORAGE: database
+      SEED_DEMO_DATA: 'true'
+      TRUST_PROXY: ''
+    ports:
+      - '4000:4000'
+
+volumes:
+  citizen_connect_pgdata:

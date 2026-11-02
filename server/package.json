@@ -1,0 +1,19 @@
+{
+  "name": "citizen-connect-api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "REST API and PostgreSQL persistence for the Citizen Connect civic issue map.",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/index.js",
+    "start": "node src/index.js",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "pg": "^8.13.1"
+  }
+}
